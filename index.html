@@ -1,32 +1,125 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
-  <link rel="icon" type="image/png" href="/trip-sketch/favicons/favicon-32x32.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trip Sketch</title>
-  <!-- Google Tag Manager -->
-  <script>(function (w, d, s, l, i) {
-      w[l] = w[l] || []; w[l].push({
-        'gtm.start':
-          new Date().getTime(), event: 'gtm.js'
-      }); var f = d.getElementsByTagName(s)[0],
-        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-    })(window, document, 'script', 'dataLayer', 'GTM-K53SNDB7');</script>
-  <!-- End Google Tag Manager -->
-  <script type="module" crossorigin src="/trip-sketch/assets/index-DRt8c8YR.js"></script>
-  <link rel="stylesheet" crossorigin href="/trip-sketch/assets/index-COa_SF3O.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사이트 이동 안내</title>
+    
+    <meta http-equiv="refresh" content="0; url=https://tripsketch.co/">
+
+    <style>
+        /* 기본 스타일 리셋 및 폰트 설정 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* 카드 컨테이너 스타일 */
+        .redirect-card {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* 아이콘 (이모지 활용) */
+        .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        /* 제목 및 본문 스타일 */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: #1a202c;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #4a5568;
+            margin-bottom: 24px;
+        }
+
+        /* 버튼 스타일의 링크 */
+        .btn-redirect {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3182ce;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .btn-redirect:hover {
+            background-color: #2c5282;
+        }
+
+        /* 로딩 스피너 애니메이션 */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3182ce;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        /* 애니메이션 키프레임 */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K53SNDB7" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <div id="app"></div>
-</body>
 
+    <div class="redirect-card">
+        <div class="icon">🚀</div>
+        <h1>사이트가 이동되었습니다.</h1>
+        <p>더 나은 서비스를 위해 새로운 주소로 이전했습니다.<br>잠시 후 자동으로 이동합니다.</p>
+        
+        <script type="text/javascript">
+            // ▼▼▼ 아래 주소를 본인의 Cloudflare Pages 주소로 꼭 수정해주세요! ▼▼▼
+            var newDomain = "https://tripsketch.co"; 
+            // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+
+            // 현재 접속한 상세 경로와 파라미터를 유지하며 이동
+            var targetUrl = newDomain + window.location.pathname + window.location.search;
+            
+            // 수동 클릭 링크에도 주소 적용
+            document.write('<a href="' + targetUrl + '" class="btn-redirect">지금 이동하기</a>');
+
+            // 즉시 이동 실행
+            window.location.href = targetUrl;
+        </script>
+        
+        <noscript>
+            <a href="https://tripsketch.co/" class="btn-redirect">지금 이동하기</a>
+        </noscript>
+    </div>
+
+</body>
 </html>
