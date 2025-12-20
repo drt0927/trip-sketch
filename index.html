@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사이트 이동 안내</title>
-    
-    <meta http-equiv="refresh" content="0; url=https://tripsketch.co/">
 
     <style>
         /* 기본 스타일 리셋 및 폰트 설정 */
@@ -99,27 +97,116 @@
     <div class="redirect-card">
         <div class="icon">🚀</div>
         <h1>사이트가 이동되었습니다.</h1>
-        <p>더 나은 서비스를 위해 새로운 주소로 이전했습니다.<br>잠시 후 자동으로 이동합니다.</p>
+        <p id="message">더 나은 서비스를 위해 새로운 주소로 이전했습니다.
         
-        <script type="text/javascript">
-            // ▼▼▼ 아래 주소를 본인의 Cloudflare Pages 주소로 꼭 수정해주세요! ▼▼▼
-            var newDomain = "https://tripsketch.co"; 
-            // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
-
-            // 현재 접속한 상세 경로와 파라미터를 유지하며 이동
-            var targetUrl = newDomain;
-            
-            // 수동 클릭 링크에도 주소 적용
-            document.write('<a href="' + targetUrl + '" class="btn-redirect">지금 이동하기</a>');
-
-            // 즉시 이동 실행
-            window.location.href = targetUrl;
-        </script>
+        <div id="btn-container">
+            <a href="https://tripsketch.co/" class="btn-redirect" id="redirect-btn">지금 이동하기</a>
+        </div>
         
-        <noscript>
-            <a href="https://tripsketch.co/" class="btn-redirect">지금 이동하기</a>
-        </noscript>
+        <p id="inapp-guide" style="display:none; font-size:14px; color:#718096; margin-top:16px;">
+            위 버튼이 작동하지 않으면<br>
+            <strong>우측 상단 메뉴(⋮) → "브라우저로 열기"</strong>를 눌러주세요.
+        </p>
     </div>
+
+    <script>
+        (function() {
+            var targetUrl = "https://tripsketch.co/";
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // 인앱 브라우저 감지
+            function isInAppBrowser() {
+                var inAppPatterns = [
+                    /KAKAOTALK/i,
+                    /NAVER/i,
+                    /FBAN|FBAV/i,           // Facebook
+                    /Instagram/i,
+                    /Line\//i,
+                    /Twitter/i,
+                    /LinkedIn/i,            // LinkedIn
+                    /SamsungBrowser\/.*CrossApp/i,
+                    /NAVER\(inapp/i,
+                    /DaumApps/i,
+                    /everytimeApp/i,
+                    /CarrotMarket/i,        // 당근마켓
+                    /ZumApp/i
+                ];
+                
+                for (var i = 0; i < inAppPatterns.length; i++) {
+                    if (inAppPatterns[i].test(ua)) return true;
+                }
+                
+                // iOS WebView 감지
+                if (/iPhone|iPad|iPod/.test(ua)) {
+                    if (!/Safari/.test(ua) && /AppleWebKit/.test(ua)) return true;
+                }
+                
+                // Android WebView 감지
+                if (/Android/.test(ua)) {
+                    if (/wv/.test(ua) || (/Version\/[\d.]+/.test(ua) && /Chrome/.test(ua))) return true;
+                }
+                
+                return false;
+            }
+            
+            // 카카오톡 감지
+            function isKakaoTalk() {
+                return /KAKAOTALK/i.test(ua);
+            }
+            
+            // Android 감지
+            function isAndroid() {
+                return /Android/i.test(ua);
+            }
+            
+            // iOS 감지
+            function isIOS() {
+                return /iPhone|iPad|iPod/i.test(ua);
+            }
+            
+            var messageEl = document.getElementById('message');
+            var btnEl = document.getElementById('redirect-btn');
+            var guideEl = document.getElementById('inapp-guide');
+            
+            if (isInAppBrowser()) {
+                // 인앱 브라우저인 경우
+                messageEl.innerHTML = '더 나은 서비스를 위해 새로운 주소로 이전했습니다.<br>아래 버튼을 눌러 이동해 주세요.';
+                guideEl.style.display = 'block';
+                
+                btnEl.onclick = function(e) {
+                    e.preventDefault();
+                    
+                    if (isKakaoTalk()) {
+                        // 카카오톡: 외부 브라우저로 열기
+                        window.location.href = 'kakaotalk://web/openExternal?url=' + encodeURIComponent(targetUrl);
+                    } else if (isAndroid()) {
+                        // Android: Intent를 통해 Chrome으로 열기 시도
+                        var intentUrl = 'intent://' + targetUrl.replace(/https?:\/\//, '') + 
+                            '#Intent;scheme=https;package=com.android.chrome;end';
+                        window.location.href = intentUrl;
+                        
+                        // Intent 실패 시 일반 이동
+                        setTimeout(function() {
+                            window.location.href = targetUrl;
+                        }, 1000);
+                    } else if (isIOS()) {
+                        // iOS: Safari로 열기 시도
+                        // 새 창으로 열기 시도 (일부 인앱에서 Safari로 열림)
+                        var newWindow = window.open(targetUrl, '_blank');
+                        if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                            // 팝업 차단된 경우 일반 이동
+                            window.location.href = targetUrl;
+                        }
+                    } else {
+                        // window.location.href = targetUrl;
+                    }
+                };
+            } else {
+                // 일반 브라우저: 바로 이동
+                // window.location.href = targetUrl;
+            }
+        })();
+    </script>
 
 </body>
 </html>
